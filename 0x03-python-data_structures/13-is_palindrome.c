@@ -15,22 +15,42 @@ void reverse_list(listint_t **newlist, listint_t *head)
 	add_nodeint_end(newlist, head->n);
 }
 /**
+ * reverse_list_new - reverse list
+ * @head: pointer to head of list
+ * Return: reversed list
+ */
+void reverse_list_new(listint_t **head)
+{
+	listint_t *prev = NULL;
+	listint_t *current = *head;
+	listint_t *next = NULL;
+
+	while (current)
+	{
+		next = current->next;
+		current->next = prev;
+		prev = current;
+		current = next;
+	}
+
+	*head = prev;
+}
+/**
  * is_palindrome - checks if a singly linked list is a palindrome
  * @head: pointer to head of list
  * Return: 0 if it is not a palindrome, 1 if it is a palindrome
  */
 int is_palindrome(listint_t **head)
 {
-	const listint_t *current, *temp;
-	listint_t *newlist = NULL;
+	listint_t *current, *temp;
 
 	if (*head == NULL || (*head)->next == NULL)
 		return (1);
 
-	reverse_list(&newlist, *head);
-
+	temp = *head;
+	reverse_list_new(&temp);
 	current = *head;
-	temp = newlist;
+
 	while (current != NULL)
 	{
 		if (temp->n == current->n)
@@ -44,6 +64,5 @@ int is_palindrome(listint_t **head)
 		}
 	}
 
-	free_listint(newlist);
 	return (1);
 }
